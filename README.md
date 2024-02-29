@@ -26,6 +26,10 @@ forge script script/DeployInitEURC.s.sol:DeployInitEURC --legacy --fork-url http
 forge script script/DeployInitEURC.s.sol:DeployInitEURC --legacy --fork-url https://rpc.cardona.zkevm-rpc.com -vvvvv --broadcast
 ```
 
+```shell
+forge script script/ConfigureLxLyMinter.s.sol:SetMinters --legacy --fork-url https://rpc.cardona.zkevm-rpc.com -vvvvv --broadcast
+```
+
 
 ### ZkEVM Mainnet
 ```shell
