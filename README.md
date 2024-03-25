@@ -1,37 +1,36 @@
-# EURC
+# EURC-e
 
-EURC contracts from [Circle](https://www.circle.com/en/eurc).
+EURC-e contracts, from the original EURC codebase from [Circle](https://www.circle.com/en/eurc).
+
+Just formatted and added deploy scripts.
 
 ## Deploy and Init
 
-setup .env
+1. setup .env
 
-### Fork
-start anvil
+2. start anvil if forking
+
 ```shell
-# fork zkevm mainnet
-anvil --fork-url https://zkevm-rpc.com/ --chain-id 1101 --port 7000
-
-# fork zkevm cardona testnet
-# anvil --fork-url https://rpc.cardona.zkevm-rpc.com --chain-id 2442 --port 7000
+anvil --fork-url https://zkevm-rpc.com/ --chain-id 1101 --port 7000 # fork zkevm mainnet
+# or
+anvil --fork-url https://rpc.cardona.zkevm-rpc.com --chain-id 2442 --port 7000 # fork zkevm cardona testnet
 ```
 
-deploy
-```shell
-forge script script/DeployInitEURC.s.sol:DeployInitEURC --legacy --fork-url http://localhost:7000 -vvvvv --broadcast
-```
-
-### Cardona Testnet
-```shell
-forge script script/DeployInitEURC.s.sol:DeployInitEURC --legacy --fork-url https://rpc.cardona.zkevm-rpc.com -vvvvv --broadcast
-```
+3. run the scripts
 
 ```shell
-forge script script/ConfigureLxLyMinter.s.sol:SetMinters --legacy --fork-url https://rpc.cardona.zkevm-rpc.com -vvvvv --broadcast
-```
+export RPC=http://localhost:7000
+# or
+export RPC=https://rpc.cardona.zkevm-rpc.com
+# or
+export RPC=https://zkevm-rpc.com/
 
+# deploy and initialize
+forge script script/DeployInitEURCe.s.sol:DeployInitEURCe --legacy --fork-url $RPC -vvvvv --verify --etherscan-api-key <> --broadcast
 
-### ZkEVM Mainnet
-```shell
-forge script script/DeployInitEURC.s.sol:DeployInitEURC --legacy --fork-url https://zkevm-rpc.com/ -vvvvv --broadcast
+# do this after deploying eurc-lxly
+forge script script/ConfigureLxLyMinter.s.sol:SetMinters --legacy --fork-url $RPC -vvvvv --broadcast
+
+# transfer power
+forge script script/RelinquishPower.s.sol:RelinquishPower --legacy --fork-url $RPC -vvvvv --broadcast
 ```

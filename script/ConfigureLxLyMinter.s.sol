@@ -6,15 +6,13 @@ import "../src/impl/v2/FiatTokenV2_2.sol";
 
 contract SetMinters is Script {
     function run() external {
-        // ATTENTION: make sure DEPLOYER_PRIVATE_KEY is the MasterMinter
-        uint256 deployerPrivateKey = vm.envUint("MASTER_MINTER_PRIVATE_KEY");
-        address deployerAddress = vm.addr(deployerPrivateKey);
-        vm.startBroadcast(deployerPrivateKey);
+        vm.startBroadcast(vm.envUint("DEPLOYER_PRIVATE_KEY"));
 
         FiatTokenV2_2 eurc = FiatTokenV2_2(vm.envAddress("ADDRESS_L2_EURC"));
+        uint256 minterAllowedAmount = 250_000_000 * 10 ** 6;
 
-        eurc.configureMinter(vm.envAddress("ADDRESS_MINTER_BURNER"), vm.envUint("MINTER_ALLOWED_AMOUNT"));
-        eurc.configureMinter(vm.envAddress("ADDRESS_NATIVE_CONVERTER"), vm.envUint("MINTER_ALLOWED_AMOUNT"));
+        eurc.configureMinter(vm.envAddress("ADDRESS_MINTER_BURNER"), minterAllowedAmount);
+        eurc.configureMinter(vm.envAddress("ADDRESS_NATIVE_CONVERTER"), minterAllowedAmount);
 
         vm.stopBroadcast();
     }
